@@ -12,8 +12,8 @@
   --f-body: 'NeueHaas', 'Helvetica Neue', Arial, sans-serif;
   --gutter: 40px;
   --sp-md: 32px; --sp-lg: 64px; --sp-xl: 96px;
-  /* Espace entre blocs du site = espace vertical entre les lignes de la galerie */
-  --block-space: var(--sp-xl);
+  /* Un seul écart entre les photos, horizontal ET vertical */
+  --gallery-gap: clamp(12px, 4.3vw, 72px);
   color-scheme: light;
 }
 * { box-sizing: border-box; margin: 0; }
@@ -48,13 +48,10 @@ img { display: block; max-width: 100%; }
 .duo div { aspect-ratio: 9 / 10; overflow: hidden; background: var(--c-ph); }
 .duo img, .equipes img, .grid img { width: 100%; height: 100%; object-fit: cover; }
 
-.equipes { padding: var(--block-space) var(--gutter); }
+.equipes { padding: var(--sp-xl) var(--gutter); }
 .equipes div { aspect-ratio: 297 / 210; overflow: hidden; background: var(--c-ph); max-width: calc(100% - 4vw); margin-inline: auto; }
 
-/* Nouvelle galerie : pas de marge haute (le bloc au-dessus fournit déjà --block-space), même valeur en bas et entre les lignes */
-.section-gallery { padding: 0 var(--gutter) var(--block-space); }
-/* Galerie actuelle : marges telles qu'aujourd'hui sur Dejean (64 / 96) */
-.section-gallery.is-old { padding: var(--sp-lg) var(--gutter) var(--sp-xl); }
+.section-gallery { padding: var(--sp-lg) var(--gutter) var(--sp-xl); }
 .grid > div { overflow: hidden; background: var(--c-ph); }
 .grid img { transition: transform 0.6s ease; }
 .grid > div:hover img { transform: scale(1.04); }
@@ -63,8 +60,7 @@ img { display: block; max-width: 100%; }
 .grid--new {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  column-gap: clamp(20px, 4.3vw, 72px);
-  row-gap: var(--block-space);
+  gap: var(--gallery-gap);
   padding-inline: clamp(0px, 3.6vw, 60px);
 }
 .grid--new > div { aspect-ratio: 2 / 3; }
@@ -89,7 +85,7 @@ img { display: block; max-width: 100%; }
   .project-header { flex-wrap: wrap; }
   .project-header p { font-size: 17px; line-height: 26px; }
   .duo { grid-template-columns: 1fr; }
-  .grid--new { grid-template-columns: 1fr 1fr; column-gap: 12px; padding-inline: 0; }
+  .grid--new { grid-template-columns: 1fr 1fr; padding-inline: 0; }
   .grid--old { grid-template-columns: 1fr; grid-auto-rows: auto; }
   .grid--old > div { grid-column: 1 !important; grid-row: auto !important; aspect-ratio: 4 / 3; }
 }
@@ -146,7 +142,6 @@ img { display: block; max-width: 100%; }
   const btnOld = document.getElementById('btn-old');
   function show(v) {
     grid.className = 'grid grid--' + v;
-    document.getElementById('galerie').classList.toggle('is-old', v === 'old');
     btnNew.setAttribute('aria-pressed', v === 'new');
     btnOld.setAttribute('aria-pressed', v === 'old');
     document.getElementById('galerie').scrollIntoView({ behavior: 'smooth', block: 'start' });
